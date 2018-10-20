@@ -1,0 +1,12 @@
+php_fpm_service_name: "php{{ php_fpm_version }}-fpm"
+php_fpm_base_path: "/etc/php/{{ php_fpm_version }}"
+php_fpm_packages:
+- "php{{ php_fpm_version }}-fpm"
+- "php{{ php_fpm_version }}-cgi"
+- "php{{ php_fpm_version }}-cli"
+- "php{{ php_fpm_version }}-xml"
+- "php{{ php_fpm_version }}-mbstring"
+- "php{{ php_fpm_version }}-gd"
+- "php{{ php_fpm_version }}-curl"
+- "php{{ php_fpm_version }}-zip"
+

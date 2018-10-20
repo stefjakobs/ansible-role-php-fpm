@@ -1,0 +1,36 @@
+---
+- include_vars: "{{ ansible_distribution }}_{{ php_fpm_version }}.yml"
+
+- name: install php-fpm rpm
+  zypper: name={{ item }} state=present
+  with_items:
+    - "php{{ php_fpm_version }}-fpm"
+  when: ansible_distribution == 'openSUSE'
+
+- name: install php-fpm deb
+  apt: name={{ item }} state=present
+  with_items:
+    "{{ php_fpm_packages }}"
+  when: ansible_distribution == 'Debian'
+
+- name: enable cgi.fix_pathinfo
+  lineinfile:
+    dest: "{{ php_fpm_base_path }}/fpm/php.ini"
+    regexp: '^;?cgi.fix_pathinfo='
+    line: 'cgi.fix_pathinfo=1'
+  notify: service php-fpm restart
+
+- name: install php-fpm config
+  template:
+    src: "php{{ php_fpm_version }}-fpm.conf.j2"
+    dest: "{{ php_fpm_base_path }}/fpm/php-fpm.conf"
+  notify: service php-fpm restart
+
+- name: create pool.d
+  file:
+    path: "{{ php_fpm_base_path }}/fpm/pool.d"
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+

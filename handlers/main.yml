@@ -1,0 +1,6 @@
+---
+- name: service php-fpm restart
+  service: name={{ php_fpm_service_name }} state=restarted
+
+- name: service php-fpm enable
+  service: name={{ php_fpm_service_name }} enabled=yes state=started
