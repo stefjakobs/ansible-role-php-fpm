@@ -1,16 +1,16 @@
 ---
-- include_vars: "{{ ansible_distribution }}_{{ php_fpm_version }}.yml"
+- include_vars: "{{ ansible_distribution }}.yml"
 
 - name: install php-fpm rpm
-  zypper: name={{ item }} state=present
-  with_items:
-    - "php{{ php_fpm_version }}-fpm"
+  zypper:
+    name: "{{ php_fpm_packages }}"
+    state: present
   when: ansible_distribution == 'openSUSE'
 
 - name: install php-fpm deb
-  apt: name={{ item }} state=present
-  with_items:
-    "{{ php_fpm_packages }}"
+  apt:
+    name: "{{ php_fpm_packages }}"
+    state: present
   when: ansible_distribution == 'Debian'
 
 - name: enable cgi.fix_pathinfo
